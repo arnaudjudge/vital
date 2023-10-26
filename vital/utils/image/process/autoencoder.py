@@ -95,7 +95,7 @@ class AutoencoderPostprocessing(PostProcessor):
             proc_batch = resize_image(reconstruction.astype(np.uint8), shape[::-1])
 
         return {
-            self.post_tag: proc_batch,
+            self.post_tag: (proc_batch, reconstruction.astype(np.uint8)),
             self.autoencoder.hparams.encoding_tag: proc_encoding,
         }
 
