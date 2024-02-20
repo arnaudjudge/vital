@@ -18,6 +18,14 @@ class Anatomical2DStructureMetrics:
         self.struct_label = struct_label
         self.no_structure_flag = float("nan")
 
+    def check_structure_exists(self) -> int:
+        """Make sure there are pixels in the segmentation of the anatomical structure.
+
+        Returns:
+            Bool of presence of pixels of the structure.
+        """
+        return self.segmentation_metrics.check_structure_exists(self.struct_label)
+
     def count_holes(self) -> int:
         """Counts the pixels that form holes in the segmentation of the anatomical structure.
 

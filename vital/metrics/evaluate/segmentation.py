@@ -40,6 +40,17 @@ class Segmentation2DMetrics:
         # they would otherwise skew the metrics' values.
         self.small_objects_size = segmentation.shape[0] * segmentation.shape[1] / 2**14
 
+    def check_structure_exists(self, struct_label: SemanticStructureId) -> int:
+        """Check if there are pixels of label in segmentation.
+
+            Args:
+                struct_label: Label(s) of the class(es) making up the segmented area for which to compute the metric.
+
+            Returns:
+                Whether or not there are pixels of this structure
+        """
+        return int(self.binary_structs[struct_label].sum() == 0)
+
     def count_holes(self, struct_label: SemanticStructureId) -> int:
         """Counts the pixels that form holes in a supposedly contiguous segmented area.
 

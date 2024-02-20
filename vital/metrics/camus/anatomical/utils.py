@@ -67,6 +67,7 @@ def compute_anatomical_metrics_by_segmentation(
     if Label.LV in labels:
         metrics.update(
             {
+                "lv_pixels": lv_metrics.check_structure_exists(),
                 "holes_in_lv": lv_metrics.count_holes(),
                 "disconnectivity_in_lv": lv_metrics.count_disconnectivity(),
             }
@@ -104,8 +105,13 @@ def compute_anatomical_metrics_by_segmentation(
         metrics.update(
             {"frontier_ratio_between_myo_and_atrium": frontier_metrics.measure_frontier_ratio_between_myo_and_atrium()}
         )
+    if (Label.ATRIUM not in labels) and (Label.LV in labels):
+        metrics.update(
+            {"frontier_ratio_between_lv_and_bg_no_atr": frontier_metrics.measure_frontier_ratio_between_lv_and_bg()}
+        )
     metrics["anatomical_errors"] = any(
         not check_metric_validity(value, thresholds.get(name), optional_structure=False)
         for name, value in metrics.items()
     )
+
     return metrics
